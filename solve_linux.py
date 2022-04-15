@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import sys
-from cgp_solver import get_expression
+from queen_solver import get_expression
 import minisat
 
 
@@ -66,24 +66,33 @@ if __name__ == "__main__":
         grid[(s-1)//size][(s-1)%size] = 1
 
     clean = True
+    n_queens = sum([sum(row) for row in grid])
+    if n_queens != size:
+        clean = False
+        print("FAIL. There are {0} queens on the chess.".format(n_queens))
     for i in range(len(grid)):
-        for j in range(len(grid[0])):
-            if sum(get_row(grid, i)) != 1:
-                clean = False
-                print("FAIL. Row {0} is not different.".format(i))
-            if sum(get_column(grid, j)) != 1:
-                clean = False
-                print("FAIL. Column {0} is not different.".format(i))
-            if sum(get_left_diag(grid, i, j)) != 1:
-                clean = False
-                print("FAIL. Left diagonal passing through cell ({0},{1}) is not different.".format(i, j))
-            if sum(get_right_diag(grid, i, j)) != 1:
-                clean = False
-                print("FAIL. Right diagonal passing through cell ({0},{1}) is not different.".format(i, j))
+        if sum(get_row(grid, i)) > 1:
+            clean = False
+            print("FAIL. There is more than 1 queen on row {0}.".format(i))
+        if sum(get_column(grid, i)) > 1:
+            clean = False
+            print("FAIL. There is more than 1 queen on column {0}.".format(i))
+        if sum(get_left_diag(grid, i, 0)) > 1:
+            clean = False
+            print("FAIL. There is more than 1 queen on the left diagonal passing through cell ({0},0).".format(i))
+        if sum(get_left_diag(grid, 0, i)) > 1:
+            clean = False
+            print("FAIL. There is more than 1 queen on the left diagonal passing through cell (0,{0}).".format(i))
+        if sum(get_right_diag(grid, 0, i)) > 1:
+            clean = False
+            print("FAIL. There is more than 1 queen on the right diagonal passing through cell (0,{0}).".format(i))
+        if sum(get_right_diag(grid, size-1-i, size-1)) > 1:
+            clean = False
+            print("FAIL. There is more than 1 queen on the right diagonal passing through cell ({0},{1}).".format(size-1-i,size-1))
     for queen in queens:
         if grid[queen[0]][queen[1]] != 1:
             clean = False
-            print("FAIL. There is no queen in case ({0},{1}) as required".format(queen[0], queen[1]))
+            print("FAIL. There is no queen in cell ({0},{1}) as required".format(queen[0], queen[1]))
     if clean:
         print("SOLVED")
         for row in grid:

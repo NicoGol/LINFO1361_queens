@@ -1,13 +1,13 @@
 from clause import *
 
 """
-For the color grid problem, the only code you have to do is in this file.
+For the queen problem, the only code you have to do is in this file.
 
 You should replace
 
 # your code here
 
-by a code generating a list of clauses modeling the grid color problem
+by a code generating a list of clauses modeling the queen problem
 for the input file.
 
 You should build clauses using the Clause class defined in clause.py
@@ -27,35 +27,39 @@ def get_expression(size, queens=None):
                 if k != i:
                     max_row = Clause(size)
                     max_row.add_negative(i,j)
-                    max_row.add_positive(k,j)
+                    max_row.add_negative(k,j)
                     expression.append(max_row)
                 if k != j:
                     max_col = Clause(size)
                     max_col.add_negative(i, j)
-                    max_col.add_positive(i, k)
+                    max_col.add_negative(i, k)
                     expression.append(max_col)
             for d in range(1,size):
                 if i+d < size and j + d < size:
                     max_right_down_diag = Clause(size)
                     max_right_down_diag.add_negative(i,j)
-                    max_right_down_diag.add_positive(i+d,j+d)
+                    max_right_down_diag.add_negative(i+d,j+d)
                     expression.append(max_right_down_diag)
                 if i-d >= 0 and j-d >= 0:
                     max_left_up_diag = Clause(size)
                     max_left_up_diag.add_negative(i, j)
-                    max_left_up_diag.add_positive(i - d, j - d)
+                    max_left_up_diag.add_negative(i - d, j - d)
                     expression.append(max_left_up_diag)
                 if i+d < size and j - d >= 0:
                     max_left_down_diag = Clause(size)
                     max_left_down_diag.add_negative(i,j)
-                    max_left_down_diag.add_positive(i+d,j-d)
+                    max_left_down_diag.add_negative(i+d,j-d)
                     expression.append(max_left_down_diag)
                 if i-d >= 0 and j + d < size:
                     max_right_up_diag = Clause(size)
                     max_right_up_diag.add_negative(i,j)
-                    max_right_up_diag.add_positive(i-d,j+d)
+                    max_right_up_diag.add_negative(i-d,j+d)
                     expression.append(max_right_up_diag)
         expression += [min_col,min_row]
+        for queen in queens:
+            q = Clause(size)
+            q.add_positive(queen[0],queen[1])
+            expression.append(q)
 
     return expression
 

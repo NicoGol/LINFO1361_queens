@@ -1,17 +1,17 @@
 """
 Class used to represent a clause in CNF for the color grid problem.
-Variable X_i_j_k is true iff cell at position (i,j) has color k.
+Variable X_i_j is true iff cell at position (i,j) has a queen on it.
 
 For example, to create a clause:
 
-X_0_1_1 or ~X_1_2 or X_3_3_2
+X_0_1 or ~X_1_2 or X_3_3
 
 you can do:
 
 clause = Clause(4)
-clause.add_positive(0, 1, 1)
-clause.add_negative(1, 2, 2)
-clause.add_positive(3, 3, 2)
+clause.add_positive(0, 1)
+clause.add_negative(1, 2)
+clause.add_positive(3, 3)
 
 """
 
