@@ -56,10 +56,10 @@ def get_expression(size, queens=None):
                     max_right_up_diag.add_negative(i-d,j+d)
                     expression.append(max_right_up_diag)
         expression += [min_col,min_row]
-        for queen in queens:
-            q = Clause(size)
-            q.add_positive(queen[0],queen[1])
-            expression.append(q)
+    for queen in queens:
+        q = Clause(size)
+        q.add_positive(queen[0],queen[1])
+        expression.append(q)
 
     return expression
 
